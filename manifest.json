@@ -1,0 +1,20 @@
+{
+  "name": "KliFox Field Operations",
+  "short_name": "KliFox",
+  "description": "AI-powered real-time field dispatch and HVAC operations platform.",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#0ea5e9",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "prefer_related_applications": false,
+  "categories": ["business", "productivity", "utilities"]
+}

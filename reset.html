@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistemi Sıfırlama</title>
+</head>
+<body style="background:#000; color:#fff; font-family:sans-serif; text-align:center; padding-top:100px;">
+    <h1>Sistem Sıfırlanıyor...</h1>
+    <p>Eski veriler, önbellekler ve oturumlar temizleniyor. Lütfen bekleyin.</p>
+    <script>
+        // Clear all storage
+        localStorage.clear();
+        sessionStorage.clear();
+        
+        // Force refresh service workers if any
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+        
+        // Redirect to index with a cache-busting timestamp
+        setTimeout(() => {
+            window.location.href = '/index.html?reset=' + Date.now();
+        }, 1500);
+    </script>
+</body>
+</html>
