@@ -74,7 +74,7 @@ App.UI.PartnerDash = {
                 </div>
                 <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:20px; border-radius:12px; text-align:center;">
                     <div style="color:var(--text-muted); font-size:12px; margin-bottom:5px;">Ağdaki Ustalar</div>
-                    <div style="font-size:24px; font-weight:bold; color:#fff;">${pData.networkCraftsmen.length || 0}</div>
+                    <div style="font-size:24px; font-weight:bold; color:#fff;">${(pData.networkCraftsmen && pData.networkCraftsmen.length) || 0}</div>
                 </div>
                 <div style="background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.05); padding:20px; border-radius:12px; text-align:center;">
                     <div style="color:var(--text-muted); font-size:12px; margin-bottom:5px;">Operasyon Kazancı</div>

@@ -184,7 +184,7 @@ Object.assign(App.UI, {
             </div>
         `;
         
-        container.appendChild(toast);
+        container.prepend(toast);
         
         // Trigger reflow for animation
         setTimeout(() => toast.style.opacity = '1', 10);

@@ -34,6 +34,31 @@ App.Engine.AI = {
 
         if (App.State.data.collectionStep === 0) {
             App.State.data.memoryContext.problem = text;
+            
+            const profile = App.State.data.userProfile || {};
+            // If user already has region data in their profile, skip location asking
+            if (profile.region && profile.region.includes(':')) {
+                const parts = profile.region.split(':');
+                App.State.data.memoryContext.city = parts[0].trim();
+                App.State.data.memoryContext.location = profile.region;
+                App.State.data.memoryContext.urgency = 'Belirtilmedi';
+                App.State.data.memoryContext.type = 'Belirtilmedi';
+                
+                App.UI.Chat.doSys(`<div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);"><i class="fas fa-terminal"></i> [Sistem] Profil verisi kullanıldı: ${profile.region} => OK</div>`);
+                
+                App.State.data.collectionStep = 6;
+                App.State.save();
+                
+                let reply = "Adresinizi profilinizden aldım. Şu an arka planda size en uygun ekibi arıyorum, bu işlem devam ederken biz sohbete devam edebiliriz. Klimanızla ilgili başka bir detay var mı?";
+                App.UI.scheduleMsg('ai', reply);
+                
+                setTimeout(() => {
+                    App.Engine.Dispatch.startSearch();
+                }, 1500);
+                
+                return;
+            }
+
             App.UI.Chat.doSys(`<div style="font-family:var(--font-mono); font-size:11px; color:var(--text-muted);"><i class="fas fa-terminal"></i> [Sistem] intent.analyze(text) => OK</div>`);
             
             if (App.Rules.Dispatch.isEmergency(txt)) {

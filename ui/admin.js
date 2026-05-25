@@ -98,6 +98,12 @@ window.Admin = {
         const users = this.getUsers();
         if(users[userId]) {
             users[userId].approved = true;
+            if (users[userId].pendingRole) {
+                users[userId].role = users[userId].pendingRole;
+                if (users[userId].role === 'craftsman') users[userId].designation = 'Saha Ustası';
+                if (users[userId].role === 'partner') users[userId].designation = 'KliFox Partner';
+                delete users[userId].pendingRole;
+            }
             localStorage.setItem('klifox_users', JSON.stringify(users));
             if (this.socket) this.socket.emit('global.state.update', { users: users });
             alert('Kullanıcı onaylandı!');
@@ -108,8 +114,9 @@ window.Admin = {
     rejectUser(userId) {
         const users = this.getUsers();
         if(users[userId]) {
-            users[userId].approved = false;
-            users[userId].role = 'customer'; // Revert back to customer
+            users[userId].approved = true; // Clear pending state
+            users[userId].role = 'customer'; // Revert back to customer completely
+            delete users[userId].pendingRole;
             localStorage.setItem('klifox_users', JSON.stringify(users));
             if (this.socket) this.socket.emit('global.state.update', { users: users });
             alert('Başvuru reddedildi ve müşteri rolüne düşürüldü.');
@@ -123,7 +130,7 @@ window.Admin = {
         
         for (const uid in users) {
             const p = users[uid];
-            if (p.approved === false && (p.role === 'craftsman' || p.role === 'partner')) {
+            if (p.approved === false && p.pendingRole) {
                 pendingUsers.push(p);
             }
         }
@@ -146,7 +153,7 @@ window.Admin = {
             html += `<tr><td colspan="5" style="text-align:center; color:#666;">Onay bekleyen kayıt bulunmuyor.</td></tr>`;
         } else {
             pendingUsers.forEach(profile => {
-                const roleName = profile.role === 'craftsman' ? 'Saha Ustası' : 'Ağ Partneri';
+                const roleName = profile.pendingRole === 'craftsman' ? 'Saha Ustası' : 'Ağ Partneri';
                 const dateStr = new Date(profile.createdAt || Date.now()).toLocaleDateString('tr-TR');
                 html += `
                     <tr>

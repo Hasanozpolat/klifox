@@ -126,7 +126,7 @@ App.UI.PartnerOnboarding = {
                 id: 'U-' + Math.floor(Math.random()*100000),
                 name: this.selectedPackage.uName,
                 phone: this.selectedPackage.uPhone,
-                role: 'partner'
+                role: 'customer' // Keep as customer initially
             };
             App.State.data.onboardingComplete = true;
             App.State.data.activeUserId = App.State.data.userProfile.id;
@@ -135,9 +135,9 @@ App.UI.PartnerOnboarding = {
         const up = App.State.data.userProfile;
         up.name = this.selectedPackage.uName;
         up.phone = this.selectedPackage.uPhone;
-        up.role = 'partner';
-        up.designation = 'KliFox Partner';
-        up.approved = true; // Auto-approved for testing
+        up.pendingRole = 'partner';
+        up.designation = 'KliFox Partner Adayı';
+        up.approved = false;
         
         // Setup Partner Data
         up.partnerData = {
@@ -149,11 +149,16 @@ App.UI.PartnerOnboarding = {
         };
 
         App.State.save();
-
-        App.UI.toast('Partnerliğiniz Onaylandı', `Tebrikler! ${up.partnerData.referralCode} referans kodunuzla ağınızı kurmaya başlayabilirsiniz.`, 'success');
         
-        // Return side nav
-        document.querySelector('.side-nav').style.display = 'flex';
+        // Notify backend about new user if socket connected
+        if (App.Adapters.Socket && App.Adapters.Socket.connected) {
+            App.Adapters.Socket.emit('admin.sync_request', { type: 'users' });
+        }
+
+        App.UI.toast('Başvuru Alındı', `Başvurunuz admin onayına iletildi. Onaylandıktan sonra Partner Merkezi'ne erişebileceksiniz.`, 'success');
+        
+        // Return to customer dashboard for now
         App.UI.syncRoleLayouts();
+        App.UI.Operations.render();
     }
 };

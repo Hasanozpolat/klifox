@@ -100,7 +100,7 @@ App.UI.CraftsmanOnboarding = {
             App.State.data.userProfile = {
                 id: 'U-' + Math.floor(Math.random()*100000),
                 name: data.name,
-                role: 'craftsman'
+                role: 'customer' // Keep as customer initially
             };
             App.State.data.onboardingComplete = true;
             App.State.data.activeUserId = App.State.data.userProfile.id;
@@ -121,13 +121,13 @@ App.UI.CraftsmanOnboarding = {
         
         App.DB.Craftsmen.push(newCraftsman);
 
-        App.State.data.userProfile.role = 'craftsman';
-        App.State.data.userProfile.designation = 'Saha Ustası';
+        App.State.data.userProfile.pendingRole = 'craftsman';
+        App.State.data.userProfile.designation = 'Saha Ustası Adayı';
         App.State.data.userProfile.district = data.district;
-        App.State.data.userProfile.approved = true; // Auto-approved for testing
+        App.State.data.userProfile.approved = false;
         App.State.save();
 
-        App.UI.toast('Tebrikler', 'Başvurunuz otomatik olarak onaylandı. Artık Saha Ustasısınız!', 'success');
+        App.UI.toast('Başvuru Alındı', 'Başvurunuz admin onayına iletildi. Onaylandıktan sonra usta girişi yapabileceksiniz.', 'success');
         
         // Return side nav
         document.querySelector('.side-nav').style.display = 'flex';

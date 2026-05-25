@@ -384,14 +384,10 @@ App.UI.Chat = {
 
         if (App.Adapters.Socket && App.Adapters.Socket.connected) {
             App.Adapters.Socket.emit('dispatch.chat_relay', { type: 'text', text: '✅ Anlaştık!', role: myRole });
+            App.Adapters.Socket.emit('dispatch.status_change', { id: App.State.data.currentRequestId, status: 'APPROVED' });
         }
         
-        if (App.State.data.otherAgreed) {
-            App.Adapters.EventBus.emit('dispatch.status_change', { id: App.State.data.currentRequestId, status: 'APPROVED' });
-        } else {
-            // Give a hint that we are waiting for the other side
-            this.doSys(`<div style="color:var(--text-muted); font-size:12px; text-align:center;"><i class="fas fa-hourglass-half"></i> Karşı tarafın onayı bekleniyor...</div>`);
-        }
+        App.Adapters.EventBus.emit('dispatch.status_change', { id: App.State.data.currentRequestId, status: 'APPROVED' });
     },
     
     handleActionComplete() {

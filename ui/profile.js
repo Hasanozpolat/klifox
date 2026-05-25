@@ -92,9 +92,6 @@ App.UI.Profile = {
 
         if (isUsta || isPartner) {
             html += `
-            <div style="margin-top:20px; text-align:center; padding: 20px; background: rgba(255, 255, 255, 0.02); border: 1px dashed rgba(255, 255, 255, 0.1); border-radius: 12px;">
-                <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 15px;">Standart müşteri arayüzüne dönmek mi istiyorsunuz?</p>
-                <button onclick="App.UI.Profile.revertToCustomer()" style="background: transparent; border: 1px solid #cbd5e1; color: #cbd5e1; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;"><i class="fas fa-user"></i> Müşteri Hesabına Dön</button>
             </div>
             `;
         }
@@ -171,15 +168,6 @@ App.UI.Profile = {
             };
             reader.readAsDataURL(input.files[0]);
         }
-    },
-
-    revertToCustomer() {
-        if (!App.State.data.userProfile) return;
-        App.State.data.userProfile.role = 'customer';
-        App.State.save();
-        App.UI.syncRoleLayouts();
-        App.UI.toast('Bilgi', 'Müşteri profiline geçiş yapıldı.', 'info');
-        this.render();
     }
 };
 
